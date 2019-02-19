@@ -21,7 +21,7 @@ steps:
 
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/drop' 
+    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/build-artifact' 
     includeRootFolder: false
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/drop/$(Build.BuildId).zip' 
