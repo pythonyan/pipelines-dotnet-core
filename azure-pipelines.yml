@@ -19,13 +19,6 @@ steps:
     testRunner: VSTest
     testResultsFiles: '**/*.trx'
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    pathtoPublish: '$(Build.ArtifactStagingDirectory)/build-artifact' 
-    artifactName: 'drop' 
-    publishLocation: 'Container'
-    TargetPath: '$(Build.ArtifactStagingDirectory)/drop'
-
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/drop' 
@@ -33,3 +26,12 @@ steps:
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/drop/$(Build.BuildId).zip' 
     replaceExistingArchive: false 
+    
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)/build-artifact' 
+    artifactName: 'drop' 
+    publishLocation: 'Container'
+    TargetPath: '$(Build.ArtifactStagingDirectory)/drop'
+
+
