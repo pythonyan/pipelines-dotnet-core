@@ -1,5 +1,5 @@
 pool:
-  vmImage: 'vs2017-win2016'
+  vmImage: 'Hosted VS2017' 
   
 variables:
   buildConfiguration: 'Release'
@@ -10,16 +10,23 @@ steps:
     dotnet test dotnetcore-tests --configuration $(buildConfiguration) --logger trx
 
 - task: DotNetCoreCLI@2
-  displayName: Publish
-  inputs:
+  displayName: 'Publish'
+  inputs: 
     command: publish
     publishWebProjects: True
     arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
-    zipAfterPublish: True
+    zipAfterPublish: true 
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact'
+- script: |
+    dotnet test dotnetcore-tests --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=../.coverage/
+    cd dotnetcore-tests
+    dotnet reportgenerator "-reports:..\.coverage\coverage.cobertura.xml" "-targetdir:..\.coverage\report" -reportTypes:htmlInline 
+
+- task: PublishCodeCoverageResults@1
+  displayName: 'Publish code coverage from .coverage/**/*.xml'
   inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)'
+    codeCoverageTool: Cobertura
+    summaryFileLocation: '.coverage/**/*.xml'
+    reportDirectory: .coverage/report
 
 
