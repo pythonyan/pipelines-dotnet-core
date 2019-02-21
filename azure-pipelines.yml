@@ -29,4 +29,7 @@ steps:
     summaryFileLocation: '.coverage/**/*.xml'
     reportDirectory: .coverage/report
 
-
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'
